@@ -10,9 +10,15 @@ export class AiService {
     user: GenerateRoutineDto,
   ): Promise<RoutineResponseDto> {
     const prompt = `
-Eres un entrenador personal experto.
+Eres un entrenador personal altamente personalizado.
 
-Genera una rutina semanal.
+Debes adaptar completamente la rutina según:
+
+- edad
+- peso
+- objetivo
+- nivel
+- equipo disponible
 
 Datos del usuario:
 ${JSON.stringify(user)}
@@ -22,6 +28,9 @@ REGLAS IMPORTANTES:
 - NO uses markdown
 - NO escribas explicaciones
 - 5 días de entrenamiento
+- Si el objetivo es "perder grasa" → más cardio + déficit alto volumen
+- Si es "ganar músculo" → más fuerza + progresión
+- Si es "resistencia" → circuitos largos
 
 Cada día debe incluir:
 - day
