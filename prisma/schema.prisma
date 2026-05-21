@@ -1,0 +1,101 @@
+generator client {
+  provider     = "prisma-client-js"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Usuario {
+  id          String      @id @default(uuid())
+  nombre      String
+  email       String      @unique
+  password    String
+
+  rutinas     Rutina[]
+  progresos   Progreso[]
+  objetivos   ObjetivoUsuario[]
+  dietas      Dieta[]
+  historiales HistorialEntrenamiento[]
+
+  createdAt   DateTime @default(now())
+}
+
+model Rutina {
+  id           String      @id @default(uuid())
+  nombre       String
+  objetivo     String
+  nivel        String
+  diasSemana   Int
+
+  usuarioId    String
+  usuario      Usuario @relation(fields: [usuarioId], references: [id])
+
+  ejercicios   Ejercicio[]
+
+  createdAt    DateTime @default(now())
+}
+
+model CategoriaEjercicio {
+  id           String       @id @default(uuid())
+  nombre       String       @unique
+
+  ejercicios   Ejercicio[]
+}
+
+model Ejercicio {
+  id             String      @id @default(uuid())
+  nombre         String
+  series         Int
+  repeticiones   Int
+  descanso       Int
+
+  rutinaId       String
+  rutina         Rutina @relation(fields: [rutinaId], references: [id])
+
+  categoriaId    String
+  categoria      CategoriaEjercicio @relation(fields: [categoriaId], references: [id])
+}
+
+model Progreso {
+  id            String    @id @default(uuid())
+  pesoActual    Float
+  calorias      Int
+  porcentajeGrasa Float
+  fecha         DateTime @default(now())
+
+  usuarioId     String
+  usuario       Usuario @relation(fields: [usuarioId], references: [id])
+}
+
+model ObjetivoUsuario {
+  id          String   @id @default(uuid())
+  tipo        String
+  descripcion String
+
+  usuarioId   String
+  usuario     Usuario @relation(fields: [usuarioId], references: [id])
+}
+
+model Dieta {
+  id          String   @id @default(uuid())
+  nombre      String
+  calorias    Int
+  proteina    Int
+  carbohidratos Int
+  grasas      Int
+
+  usuarioId   String
+  usuario     Usuario @relation(fields: [usuarioId], references: [id])
+}
+
+model HistorialEntrenamiento {
+  id               String   @id @default(uuid())
+  fecha            DateTime @default(now())
+  duracionMinutos  Int
+  caloriasQuemadas Int
+
+  usuarioId        String
+  usuario          Usuario @relation(fields: [usuarioId], references: [id])
+}
