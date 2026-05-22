@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AiModule } from './ai/ai.module';
 import { AuthModule } from './auth/auth.module';
+import { RutinasModule } from './rutinas/rutinas.module';
 
 @Module({
   imports: [
@@ -12,8 +13,9 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
     }),
     PrismaModule,
-    AiModule,
     AuthModule,
+    AiModule,
+    RutinasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

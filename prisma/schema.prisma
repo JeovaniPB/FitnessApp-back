@@ -28,9 +28,11 @@ model Rutina {
   objetivo     String
   nivel        String
   diasSemana   Int
+  estado       String      @default("activa")
+  fechaInicio  DateTime?
 
   usuarioId    String
-  usuario      Usuario @relation(fields: [usuarioId], references: [id])
+  usuario      Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 
   ejercicios   Ejercicio[]
 
@@ -47,26 +49,30 @@ model CategoriaEjercicio {
 model Ejercicio {
   id             String      @id @default(uuid())
   nombre         String
-  series         Int
-  repeticiones   Int
-  descanso       Int
+  series         String      
+  repeticiones   String      
+  descanso       Int         @default(60)
 
   rutinaId       String
-  rutina         Rutina @relation(fields: [rutinaId], references: [id])
+  rutina         Rutina @relation(fields: [rutinaId], references: [id], onDelete: Cascade)
 
-  categoriaId    String
-  categoria      CategoriaEjercicio @relation(fields: [categoriaId], references: [id])
+  categoriaId    String?
+  categoria      CategoriaEjercicio? @relation(fields: [categoriaId], references: [id])
+
+  createdAt      DateTime    @default(now())
 }
 
 model Progreso {
-  id            String    @id @default(uuid())
-  pesoActual    Float
-  calorias      Int
+  id              String    @id @default(uuid())
+  pesoActual      Float
+  calorias        Int
   porcentajeGrasa Float
-  fecha         DateTime @default(now())
+  fecha           DateTime @default(now())
 
-  usuarioId     String
-  usuario       Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId       String
+  usuario         Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime @default(now())
 }
 
 model ObjetivoUsuario {
